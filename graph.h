@@ -7,27 +7,53 @@
 
 #include <vector>
 #include <list>
+#include <set>
 #include <queue>
 #include "vertex.h"
-#include "edge.h"
+#include "edgeinfo.h"
 
 using namespace std;
 
-template <class V, class E>
-class Graph {
-    vector<Vertex<V,E> *> vertexSet;
-    vector<Edge<V,E> *> edgeSet;
-    void dfs(Vertex<V,E> *v, vector<V,E> &res) const;
-    vector<V,E> pontosArt;
-    int counter;
+class Edge {
+    int id;
+    Vertex* src;
+    Vertex* dst;
+    EdgeInfo* info;
 
 public:
-    bool addVertex(const V &in);
-    bool addEdge(const V &sourc, const V &dest, E w);
 
+    Edge(Vertex* s, Vertex* d, EdgeInfo* e): src(s), dst(d), info(e), id(0){}
+
+    Vertex* getSrc() {return this->src;}
+    Vertex* getDst() {return this->dst;}
+    EdgeInfo* getInfo() {return this->info;}
+    int getID() {return this->id;}
+
+};
+
+class Graph {
+
+    std::string name;
+    int id;
+
+    // Set of vertices and edges
+    set<Vertex*> vertexSet;
+    set<Edge*> edgeSet;
+
+
+public:
+
+    Graph(std::string name): id(0), name(name){}
+
+    // Make these functions
+
+    bool addVertex(std::string name);
+    void removeVertexByName(Vertex* v);
+    bool removeVertexByName(std::string name);
+    bool addEdge(Vertex &sourc, Vertex &dest, EdgeInfo &w);
     void printGraph();
 
-
+/*
     bool removeVertex(const V &in);
     bool removeEdge(const V &sourc, const V &dest);
     vector<V,E> dfs() const;
@@ -40,6 +66,7 @@ public:
     vector<Vertex<V,E>* > npo();
     void npoAux(Vertex<V,E>* v);
     void clone(Graph<V,E> &g);
+    */
 };
 
 

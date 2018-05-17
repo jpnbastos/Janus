@@ -6,31 +6,38 @@
 #define JANUS_VERTEX_H
 
 #include <vector>
-#include "edge.h"
+#include "edgeinfo.h"
 
 
 
-template <class V, class E>
 class Vertex {
 
-    V info; // payload info
-    int id;
-    std::vector<Edge<V,E>> adj; // adjency list
+    const int id;
+    std::string name;
     bool visited; // visited flag
 
-    void addEdge(Vertex<V,E> *dest, E w);
-    bool removeEdgeTo(Vertex<V,E> *d);
+    // outgoing
+    typedef std::vector<Vertex, EdgeInfo> *edgeList;
+    edgeList outgoing;
 
-    // path
-    Vertex<V,E>* path;
 
 public:
-    Vertex(V in);
-    Vertex(const Vertex<V,E> &v);
-    V getInfo() const;
-    int getID() {return id;}
-//    friend class Graph<V,E>;
+
+    Vertex(std::string name) : id(0), name(name), visited(false) {}
+    Vertex(std::string name, int id) : id(id), name(name), visited(false) {}
+
+
+    // auxiliary functions
+    void print() { cout << "Vertex [name] " << this->name << endl; }
+    void setName(std::string n_name) { this->name = n_name; }
+    std::string getName() { return this->name; }
+    void setVisited(bool n_visited) { this->visited = n_visited; }
+    bool getVisitied() { return this->visited; }
+    int getID() { return this->id; }
+    edgeList getOutgoing() { return this->outgoing;}
+
 };
+
 
 
 #endif //JANUS_VERTEX_H

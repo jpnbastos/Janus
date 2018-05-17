@@ -4,7 +4,57 @@
 
 #include "graph.h"
 
+int counter = 0;
 
+bool Graph::addVertex(std::string name) {
+    Vertex *newVertex = new Vertex(name, counter);
+    vertexSet.insert(newVertex);
+    return true;
+}
+
+bool Graph::removeVertexByName(std::string name) {
+    bool found = false;
+    for(std::set<Vertex*>::const_iterator it = Graph::vertexSet.begin(); it != vertexSet.end(); it++ ){
+        Vertex* currentVertex = *it;
+        if(currentVertex->getName() == name){
+            found = true;
+            vertexSet.erase(currentVertex);
+        }
+    }
+    return found;
+}
+
+void Graph::removeVertexByName(Vertex* v) {
+    vertexSet.erase(v);
+}
+
+bool Graph::addEdge(Vertex &sourc, Vertex &dest, EdgeInfo &w){
+    Edge* newEdge = new Edge(&sourc,&dest,&w);
+    edgeSet.insert(newEdge);
+    return true;
+}
+
+void Graph::printGraph(){
+    cout << "Graph is being printed: " << endl;
+
+    // Vertices
+    cout << "List of Vertices (size: " << vertexSet.size() << ") " << endl;
+    for(std::set<Vertex*>::const_iterator it = Graph::vertexSet.begin(); it != vertexSet.end(); it++ ){
+        Vertex* currentVertex = *it;
+        cout << "Vertex[" << currentVertex->getID() << "]: " << currentVertex->getName() << endl;
+    }
+
+    // Edges
+    cout << "List of Edges (size: " << edgeSet.size() << ") " << endl;
+    for(std::set<Edge*>::const_iterator it = Graph::edgeSet.begin(); it != edgeSet.end(); it++ ){
+        Edge* currentEdge = *it;
+        cout << "Edge[" << currentEdge->getInfo()->getID() << "]: " << currentEdge->getInfo()->getName() << " source: "
+             << currentEdge->getSrc()->getName() << "and destination: " << currentEdge->getDst()->getName() << endl;
+    }
+    cout << "End of graph" << endl;
+}
+
+/*
 template <class V, class E>
 int Graph<V,E>::getNumVertex() const {
     return vertexSet.size();
@@ -267,3 +317,4 @@ void Graph<V,E>::npoAux(Vertex<V,E>* v)
     }
     v->num = counter++;
 }
+*/

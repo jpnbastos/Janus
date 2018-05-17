@@ -1,7 +1,7 @@
 #include <iostream>
 
 // Testing
-#include "edge.h"
+#include "edgeinfo.h"
 
 
 int main() {
