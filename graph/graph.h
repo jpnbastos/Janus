@@ -34,7 +34,6 @@ public:
 
 class Graph {
 
-    std::string name;
     int id;
 
     set<Edge*> edgeSet;
@@ -75,6 +74,7 @@ public:
     void npoAux(Vertex<V,E>* v);
     void clone(Graph<V,E> &g);
     */
+    std::string name;
 };
 
 

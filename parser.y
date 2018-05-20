@@ -1,5 +1,3 @@
-
-
 %{
 
 #include <stdio.h>
@@ -23,7 +21,6 @@ stack <string> eventx;
     char* sval;
 }
 
-
 %token T_REQUIREMENT
 %token T_PLANT
 %token T_AUTOMATON
@@ -43,8 +40,6 @@ stack <string> eventx;
 %token UNKNOWN
 %token ALPHANUM
 
-
-
 %type<sval> ALPHANUM
 %type<Automata> specification
 
@@ -62,8 +57,8 @@ lines: {}
 
 line: {}
     | T_CONTROLLABLE words T_EOL1 {}
-    | T_SUPERVISOR ALPHANUM T_EOL2 contents T_EO { printf("ASDSADASDASDSAA"); spec->setName($2); }
-    | T_ALPHABET words T_EOL1 {printf("Alphabet! \n");}
+    | T_SUPERVISOR ALPHANUM T_EOL2 contents T_EO {spec->setName($2); }
+    | T_ALPHABET words T_EOL1 {}
 ;
 
 contents:
@@ -71,10 +66,10 @@ contents:
 ;
 
 content:
-    | T_LOCATION ALPHANUM T_EOL2 {src = $2; spec->addLocation($2,false,false,false); printf("Found Location! \n");}
-    | T_LOCATION ALPHANUM T_EOL2 T_INITIAL T_EOL1 {src = $2; spec->addLocation($2,true,false,false); printf("Found Location1! %s\n",$2);}
-    | T_LOCATION ALPHANUM T_EOL2 T_INITIAL T_EOL1 T_MARKED T_EOL1 content {src = $2; spec->addLocation($2,true,true,false); printf("Found Location2! \n");}
-    | T_LOCATION ALPHANUM T_EOL2 T_MARKED T_EOL1 {src = $2; spec->addLocation($2,false,true,false); printf("Found Location3! \n");}
+    | T_LOCATION ALPHANUM T_EOL2 {src = $2; spec->addLocation($2,false,false,false);}
+    | T_LOCATION ALPHANUM T_EOL2 T_INITIAL T_EOL1 {src = $2; Location* newLoc = spec->addLocation($2,true,false,false); spec->setInitial(newLoc); }
+    | T_LOCATION ALPHANUM T_EOL2 T_INITIAL T_EOL1 T_MARKED T_EOL1 content {src = $2; Location* newLoc = spec->addLocation($2,true,true,false); spec->addMarked(newLoc);}
+    | T_LOCATION ALPHANUM T_EOL2 T_MARKED T_EOL1 {src = $2; Location* newLoc = spec->addLocation($2,false,true,false); spec->addMarked(newLoc);}
     | T_EDGE events T_GOTO ALPHANUM T_EOL1 {
 
         for(int i = 0; i < eventx.size(); i++){
@@ -83,8 +78,6 @@ content:
             cout << "Yeay!" << a << endl;
             eventx.pop();
         }
-
-     printf("Found edge to %s! \n", $4);
      }
 ;
 
@@ -102,8 +95,8 @@ words:
 ;
 
 word:
-    | ALPHANUM {printf("word: %s\n", $1);}
-    | ALPHANUM T_COMMA {printf("word: %s\n", $1);}
+    | ALPHANUM {}
+    | ALPHANUM T_COMMA {}
 ;
 
 %%
