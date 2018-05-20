@@ -1,0 +1,26 @@
+activity a:
+
+claim r1 cl_r1;
+claim r2 cl_r2;
+claim r3 cl_r3;
+release r1 rl_r1;
+release r2 rl_r2;
+release r3 rl_r3;
+action a p1 1;
+action b p1 2;
+action c p2 1;
+action d p3 3;
+action e p4 1;
+
+
+dep cl_r1 a;
+dep cl_r2 b;
+dep cl_r3 c;
+dep a d;
+dep b d;
+dep c e;
+dep d rl_r1;
+dep d rl_r2;
+dep e rl_r3;
+
+end

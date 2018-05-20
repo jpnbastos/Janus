@@ -49,6 +49,8 @@ public:
     Graph(): id(0), name(""){}
     Graph(std::string name): id(0), name(name){}
 
+    set<Edge*> getEdgeSet() {return edgeSet;}
+    set<Vertex*> getVertexSet() {return vertexSet;}
     // Make these functions
     std::string getName() {return name;}
     void setName(std::string n) {this->name = n;}

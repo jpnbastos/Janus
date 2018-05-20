@@ -8,7 +8,6 @@
 
 %}
 
-
 digit         [0-9]
 letter        [a-zA-Z]
 underscore [_]
@@ -30,7 +29,15 @@ underscore [_]
 ":"             { return T_EOL2; }
 ","             { return T_COMMA; }
 "end"           { return T_EO; }
+"!"           { return T_EO; }
 
+"activity"      { return T_ACTIVITY; }
+"claim"         { return T_CLAIM; }
+"release"       { return T_RELEASE; }
+"action"        { return T_ACTION; }
+"nodes"         { return T_NODES; }
+"deps"          { return T_DEPS; }
+"dep"           { return T_DEP; }
 
 {letter}({letter}|{digit}|"_")* {
                        yylval.sval = strdup(yytext);

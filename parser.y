@@ -5,15 +5,19 @@
 #include <string.h>
 extern int yylex();
 #include "logistics.h"
+#include "activity.h"
 #include <stack>
-void yyerror(Automata* spec, const char* s);
+
+
+
+void yyerror(Automata* spec, Activity* act,  const char* s);
 
 std::string src;
 stack <string> eventx;
 %}
 
-
 %parse-param {Automata* spec}
+%parse-param {Activity* act}
 
 %union {
 	int ival;
@@ -30,6 +34,7 @@ stack <string> eventx;
 %token T_EDGE
 %token T_GOTO
 %token T_EO
+%token T_EO2
 %token T_EOL1
 %token T_EOL2
 %token T_ALPHABET
@@ -40,8 +45,18 @@ stack <string> eventx;
 %token UNKNOWN
 %token ALPHANUM
 
+%token T_ACTIVITY
+%token T_CLAIM
+%token T_RELEASE
+%token T_ACTION
+%token T_NODES
+%token T_DEPS
+%token T_DEP
+
 %type<sval> ALPHANUM
 %type<Automata> specification
+
+%error-verbose
 
 %start specification
 
@@ -56,9 +71,21 @@ lines: {}
 ;
 
 line: {}
-    | T_CONTROLLABLE words T_EOL1 {}
+    | T_CONTROLLABLE words T_EOL1 { printf("YIIII");}
     | T_SUPERVISOR ALPHANUM T_EOL2 contents T_EO {spec->setName($2); }
     | T_ALPHABET words T_EOL1 {}
+    | T_ACTIVITY ALPHANUM T_EOL2 lines T_EO {printf("YasdasdsadsadaI"); }
+;
+
+lines:
+    | line lines
+;
+
+line:
+    | T_CLAIM ALPHANUM ALPHANUM T_EOL1 line { printf("Found a claim! \n");}
+    | T_RELEASE ALPHANUM ALPHANUM T_EOL1 line {printf("Found a release! \n");}
+    | T_ACTION ALPHANUM ALPHANUM NUMBER T_EOL1 line {printf("Found a action! \n");}
+    | T_DEP ALPHANUM ALPHANUM line T_EOL1 {printf("Found a edge! \n");}
 ;
 
 contents:
@@ -75,7 +102,6 @@ content:
         for(int i = 0; i < eventx.size(); i++){
             std::string a = eventx.top();
             spec->addTransition(src,$4,a);
-            cout << "Yeay!" << a << endl;
             eventx.pop();
         }
      }
@@ -98,6 +124,7 @@ word:
     | ALPHANUM {}
     | ALPHANUM T_COMMA {}
 ;
+
 
 %%
 

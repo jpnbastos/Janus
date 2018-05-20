@@ -23,6 +23,7 @@ public:
     std::string name;
     const int id;
 
+    Vertex() : id(0), name("dummy"), visited(false) {}
     Vertex(std::string name) : id(0), name(name), visited(false) {}
     Vertex(std::string name, int id) : id(id), name(name), visited(false) {}
 
