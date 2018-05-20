@@ -29,6 +29,7 @@ public:
     EdgeInfo* getInfo() {return this->info;}
     int getID() {return this->id;}
 
+
 };
 
 class Graph {
@@ -36,21 +37,28 @@ class Graph {
     std::string name;
     int id;
 
-    // Set of vertices and edges
-    set<Vertex*> vertexSet;
     set<Edge*> edgeSet;
 
+    int e_counter = 0;
+
+protected:
+    // Set of vertices and edges
+    set<Vertex*> vertexSet;
+    int v_counter = 0;
 
 public:
-
+    Graph(): id(0), name(""){}
     Graph(std::string name): id(0), name(name){}
 
     // Make these functions
-
+    std::string getName() {return name;}
+    void setName(std::string n) {this->name = n;}
     bool addVertex(std::string name);
-    void removeVertexByName(Vertex* v);
+    void removeVertex(Vertex* v);
+    Vertex* findVertex(std::string name);
     bool removeVertexByName(std::string name);
-    bool addEdge(Vertex &sourc, Vertex &dest, EdgeInfo &w);
+    bool addEdge(std::string s, std::string d, std::string w);
+    bool addEdgeByPointer(Vertex &sourc, Vertex &dest, EdgeInfo &w);
     void printGraph();
 
 /*

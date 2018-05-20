@@ -4,12 +4,21 @@
 
 #include "graph.h"
 
-int counter = 0;
-
 bool Graph::addVertex(std::string name) {
-    Vertex *newVertex = new Vertex(name, counter);
+    Vertex *newVertex = new Vertex(name, vertexSet.size());
     vertexSet.insert(newVertex);
+    this->v_counter = this->v_counter++;
     return true;
+}
+
+Vertex* Graph::findVertex(std::string name){
+    for(std::set<Vertex*>::const_iterator it = Graph::vertexSet.begin(); it != vertexSet.end(); it++ ){
+        Vertex* currentVertex = *it;
+        if(currentVertex->getName() == name){
+            return currentVertex;
+        }
+    }
+    return NULL;
 }
 
 bool Graph::removeVertexByName(std::string name) {
@@ -19,19 +28,35 @@ bool Graph::removeVertexByName(std::string name) {
         if(currentVertex->getName() == name){
             found = true;
             vertexSet.erase(currentVertex);
+            this->v_counter = this->v_counter--;
         }
     }
     return found;
 }
 
-void Graph::removeVertexByName(Vertex* v) {
+void Graph::removeVertex(Vertex* v) {
     vertexSet.erase(v);
+    this->v_counter = this->v_counter--;
 }
 
-bool Graph::addEdge(Vertex &sourc, Vertex &dest, EdgeInfo &w){
+bool Graph::addEdgeByPointer(Vertex &sourc, Vertex &dest, EdgeInfo &w){
     Edge* newEdge = new Edge(&sourc,&dest,&w);
     edgeSet.insert(newEdge);
+    this->e_counter = this->e_counter++;
     return true;
+}
+
+bool Graph::addEdge(std::string s, std::string d, std::string w){
+    Vertex* src = findVertex(s);
+    Vertex* dst = findVertex(d);
+    EdgeInfo* nInfo = new EdgeInfo(edgeSet.size(),w);
+    if(src != NULL && dst != NULL){
+        Edge* newEdge = new Edge(src,dst,nInfo);
+        edgeSet.insert(newEdge);
+        this->e_counter = this->e_counter++;
+        return true;
+    }
+    return false;
 }
 
 void Graph::printGraph(){
@@ -49,7 +74,7 @@ void Graph::printGraph(){
     for(std::set<Edge*>::const_iterator it = Graph::edgeSet.begin(); it != edgeSet.end(); it++ ){
         Edge* currentEdge = *it;
         cout << "Edge[" << currentEdge->getInfo()->getID() << "]: " << currentEdge->getInfo()->getName() << " source: "
-             << currentEdge->getSrc()->getName() << "and destination: " << currentEdge->getDst()->getName() << endl;
+             << currentEdge->getSrc()->getName() << " and destination: " << currentEdge->getDst()->getName() << endl;
     }
     cout << "End of graph" << endl;
 }

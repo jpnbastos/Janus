@@ -7,21 +7,21 @@
 
 #include <vector>
 #include "edgeinfo.h"
-
-
+#include <map>
 
 class Vertex {
 
-    const int id;
-    std::string name;
     bool visited; // visited flag
 
     // outgoing
-    typedef std::vector<Vertex, EdgeInfo> *edgeList;
+    typedef std::map<Vertex*, EdgeInfo*> edgeList;
     edgeList outgoing;
 
 
 public:
+
+    std::string name;
+    const int id;
 
     Vertex(std::string name) : id(0), name(name), visited(false) {}
     Vertex(std::string name, int id) : id(id), name(name), visited(false) {}
@@ -35,7 +35,6 @@ public:
     bool getVisitied() { return this->visited; }
     int getID() { return this->id; }
     edgeList getOutgoing() { return this->outgoing;}
-
 };
 
 
