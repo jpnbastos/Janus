@@ -33,6 +33,7 @@ int main(int argc, char **argv){
     spec.printAutomataToFile("cifout.cif");
 
     /**
+     * @todo see matrix.h
      * @todo convert each activity into a matrix
      * @todo implement the state-space algorithm
      * @todo get the results out
