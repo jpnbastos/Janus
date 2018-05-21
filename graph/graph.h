@@ -55,6 +55,7 @@ public:
     std::string getName() {return name;}
     void setName(std::string n) {this->name = n;}
     bool addVertex(std::string name);
+    void addVertex(Vertex* v) {vertexSet.insert(v);}
     void removeVertex(Vertex* v);
     Vertex* findVertex(std::string name);
     bool removeVertexByName(std::string name);

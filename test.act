@@ -1,17 +1,17 @@
 activity a:
 
-claim r1 cl_r1;
-claim r2 cl_r2;
-claim r3 cl_r3;
-release r1 rl_r1;
-release r2 rl_r2;
-release r3 rl_r3;
-action a p1 1;
-action b p1 2;
-action c p2 1;
-action d p3 3;
-action e p4 1;
+claim cl_r1 r1;
+claim cl_r2 r2;
+claim cl_r3 r3;
+release rl_r1 r1;
+release rl_r2 r2;
+release rl_r3 r3;
 
+action a p1 r1 1;
+action b p1 r1 2;
+action c p2 r2 1;
+action d p3 r3 3;
+action e p4 r3 1;
 
 dep cl_r1 a;
 dep cl_r2 b;

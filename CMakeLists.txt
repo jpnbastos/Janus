@@ -22,7 +22,7 @@ ADD_FLEX_BISON_DEPENDENCY(Lexer Parser)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR} automata/ activity/)
 
 
-set(SOURCE_FILES main.cpp graph/graph.cpp graph/graph.h graph/vertex.cpp graph/vertex.h graph/edgeinfo.cpp graph/edgeinfo.h automata/logistics.cpp automata/logistics.h activity/activity.cpp activity/activity.h activity/system.cpp activity/system.h)
+set(SOURCE_FILES main.cpp graph/graph.cpp graph/graph.h graph/vertex.cpp graph/vertex.h graph/edgeinfo.cpp graph/edgeinfo.h automata/logistics.cpp automata/logistics.h activity/activity.cpp activity/activity.h maxplus/maxplus.cpp maxplus/maxplus.h)
 add_executable(Janus ${BISON_Parser_OUTPUTS} ${FLEX_Lexer_OUTPUTS} ${SOURCE_FILES} graph/graph.cpp graph/graph.h )
 
 

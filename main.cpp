@@ -8,17 +8,18 @@
 #define YYDEBUG 1 // This is new
 
 // prototype of bison-generated parser function
-int yyparse(Automata* spec, Activity* act);
+int yyparse(Automata* spec, set<Activity*>* acts);
 
 int main(int argc, char **argv){
     extern FILE* yyin;
     Automata spec = Automata();
-    Activity act = Activity();
+
+    ActivitySet acts = ActivitySet();
     cout << "Starting Parser: " << endl;
     yyin = fopen(argv[1], "r");
 
     do {
-        yyparse(&spec,&act);
+        yyparse(&spec,&acts.activitySet);
 
 
     } while (!feof(yyin));
@@ -32,19 +33,19 @@ int main(int argc, char **argv){
     spec.printAutomataToFile("cifout.cif");
 
     /**
-     * @todo make the parser store the info of the activities
-     * @todo make it extendable for a list of activities
      * @todo convert each activity into a matrix
      * @todo implement the state-space algorithm
      * @todo get the results out
      */
-    cout << "Finished Parsing Activity" << endl;
-    cout << "Found " << act.getVertexSet().size() << endl;
-    cout << "Found edges: " << act.getEdgeSet().size() << endl;
+    for(auto act : acts.activitySet) {
+        cout << "Finished Parsing Activity " << act->getName() << endl;
+        cout << "Found " << act->getNodeSet().size() << endl;
+        cout << "Found edges: " << act->getDepSet().size() << endl;
+    }
     return 0;
 }
 
-void yyerror(Automata* spec, Activity* act, const char* s) {
+void yyerror(Automata* spec, set<Activity*>* acts, const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
     exit(1);
 }

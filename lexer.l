@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-
+#include "activity.h"
 
 
 #define YY_DECL int yylex()
@@ -29,7 +29,9 @@ underscore [_]
 ":"             { return T_EOL2; }
 ","             { return T_COMMA; }
 "end"           { return T_EO; }
-"!"           { return T_EO; }
+"!"             { return T_EO; }
+"Activities"    { return T_ACTIVITIES;}
+"final"         { return T_FINAL;}
 
 "activity"      { return T_ACTIVITY; }
 "claim"         { return T_CLAIM; }
