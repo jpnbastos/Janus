@@ -3,6 +3,9 @@
 #include "graph/graph.h"
 #include "automata/logistics.h"
 #include "activity/activity.h"
+#include "maxplus/maxplus.h"
+
+#define N_INF -std::numeric_limits<double>::infinity()
 
 
 #define YYDEBUG 1 // This is new
@@ -33,7 +36,6 @@ int main(int argc, char **argv){
     spec.printAutomataToFile("cifout.cif");
 
     /**
-     * @todo see matrix.h
      * @todo convert each activity into a matrix
      * @todo implement the state-space algorithm
      * @todo get the results out
@@ -43,6 +45,22 @@ int main(int argc, char **argv){
         cout << "Found " << act->getNodeSet().size() << endl;
         cout << "Found edges: " << act->getDepSet().size() << endl;
     }
+
+
+    cout << "trying out matrix! " << endl;
+    Matrix test(2,2);
+    test(0,0) = 1;
+    test(0,1) = 2;
+    test(1,0) = N_INF;
+    test(1,1) = 4;
+    cout << "Values: " << test(1,1) << " " << test(0,0) << endl;
+    test.print();
+
+    Matrix vector(2,1);
+    vector(0,0) = 2;
+    vector(1,0) = 0;
+    Matrix result = test*vector;
+    result.print();
     return 0;
 }
 
