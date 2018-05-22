@@ -112,6 +112,7 @@ activity:
                     depsx.pop();
          }
      $$ = act1;
+     id = 0;
     }
 ;
 

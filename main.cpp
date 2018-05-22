@@ -36,7 +36,6 @@ int main(int argc, char **argv){
     spec.printAutomataToFile("cifout.cif");
 
     /**
-     * @todo convert each activity into a matrix
      * @todo implement the state-space algorithm
      * @todo get the results out
      */
@@ -44,6 +43,12 @@ int main(int argc, char **argv){
         cout << "Finished Parsing Activity " << act->getName() << endl;
         cout << "Found " << act->getNodeSet().size() << endl;
         cout << "Found edges: " << act->getDepSet().size() << endl;
+        for (auto n : act->nodeSet) {
+            cout << "Node : " << n->id << " " << n->namex << " " << n->resource << n->peripheral << endl;
+        }
+        act->generateActivityMatrix();
+        act->activityMatrix->print();
+
     }
 
 

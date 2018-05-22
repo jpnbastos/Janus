@@ -81,5 +81,4 @@ public:
 };
 
 
-
 #endif //JANUS_GRAPH_H
