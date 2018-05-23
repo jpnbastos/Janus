@@ -20,21 +20,31 @@
 
     @todo create the set of outgoing transitions.
 */
-class Location : public Vertex {
+class Location {
 
 public:
 
     // constructor
-    Location(string &name, int id, bool initial, bool marked, bool final) : Vertex(name, id), initial(initial), marked(marked), final(final) {}
+    Location(string &name, int id, bool initial, bool marked, bool final) : id(id), name(name), initial(initial), marked(marked), final(final), visited(false) {}
 
     // setters and getters
     bool getInitial() {return this->initial;}
-
+    bool visted() {return visited;};
+    void print() { cout << "Location [name] " << this->name << endl; }
+    void setName(std::string n_name) { this->name = n_name; }
+    std::string getName() { return this->name; }
+    void setVisited(bool n_visited) { this->visited = n_visited; }
+    bool getVisitied() { return this->visited; }
+    int getID() { return this->id; }
 private:
+
+    int id;
+    std::string name;
 
     bool initial;
     bool marked;
     bool final;
+    bool visited;
 
 };
 
@@ -42,13 +52,25 @@ private:
     class definition of transition (base class Edge of Graph)
     a transition is defined as a Source (location), Destination (location) and Information (EdgeInfo).
 */
-class Transition : public Edge {
+class Transition {
+
+    int id;
+    Location* src;
+    Location* dst;
+    EdgeInfo* info;
+
 public:
 
-    // constructor
-    Transition(Location *s, Location *d, EdgeInfo *e);
+    Transition(Location *s, Location *d, EdgeInfo *e): src(s), dst(d), info(e), id(0){}
 
-private:
+    Location* getSrc() {return this->src;}
+    Location* getDst() {return this->dst;}
+    EdgeInfo* getInfo() {return this->info;}
+    int getID() {return this->id;}
+    // constructor
+
+
+
 
 };
 
@@ -56,12 +78,12 @@ private:
     class definition of automata (base class Graph)
     set of locations, marked locations and transitions. Plus an initial location.
 */
-class Automata : public Graph {
+class Automata {
 public:
 
     // constructor
     Automata(string &name);
-    Automata();
+    Automata() : name("") {}
 
     // setters and getters
     void setInitial(Location* location) {initial = location;};
@@ -83,13 +105,16 @@ public:
     set<Transition*> getLocationsTransitions(Location* src);
     Location* findLocation(std::string name);
 
+    void setName(std::string name) {name = name;}
+    std::string getName() {return name;}
+
 private:
 
     // sets
     set<Location*> locationSet;
     set<Transition*> transSet;
     set<Location*> markedSet;
-
+    std::string name;
     // initial location
     Location* initial;
 

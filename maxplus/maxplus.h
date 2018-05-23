@@ -16,11 +16,13 @@ public:
     Matrix(unsigned rows, unsigned cols);
     double& operator() (unsigned row, unsigned col);
     double  operator() (unsigned row, unsigned col) const;
+    int getVectorSize() { return size_c;}
 
-    ~Matrix();                              // Destructor
-    Matrix(Matrix const& m);               // Copy constructor
-    Matrix& operator= (Matrix const& m);   // Assignment operator
+    int size_c;
+    int size_r;
+
     void print();
+    double norm();
 
     Matrix operator*(Matrix &m) {
         Matrix result = Matrix(this->size_r, m.size_c);
@@ -35,12 +37,28 @@ public:
         return result;
     }
 
+    bool operator==(const Matrix& other) const {
+        bool flag = false;
+        if (this->size_r == other.size_r && this->size_c == other.size_c) {
+            for (int i = 0; i < this->size_r; i++) {
+                for (int k = 0; k < this->size_c; k++) {
+                    if((*this)(i,k) == other(i,k))
+                        flag = true;
+                    else
+                        flag = false;
+                }
+            }
+        }
+        return flag;
+    }
+
 private:
     std::string name;
     unsigned rows_, cols_;
     double* data_;
-    int size_c;
-    int size_r;
+
+
+
 };
 
 inline
@@ -60,11 +78,7 @@ Matrix::Matrix(unsigned rows, unsigned cols)
     size_c = cols;
 }
 
-inline
-Matrix::~Matrix()
-{
-    delete[] data_;
-}
+
 
 inline
 double& Matrix::operator() (unsigned row, unsigned col)
@@ -81,6 +95,7 @@ double Matrix::operator() (unsigned row, unsigned col) const
         std::cout << "const Matrix subscript out of bounds" << std::endl;
     return data_[cols_*row + col];
 }
+
 
 
 #endif //JANUS_MAXPLUS_H

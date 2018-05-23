@@ -4,6 +4,7 @@
 #include "automata/logistics.h"
 #include "activity/activity.h"
 #include "maxplus/maxplus.h"
+#include "maxplus/statespace.h"
 
 #define N_INF -std::numeric_limits<double>::infinity()
 
@@ -26,6 +27,7 @@ int main(int argc, char **argv){
 
 
     } while (!feof(yyin));
+
     cout << "Finished Parsing" << endl;
     cout << "Found " << spec.getLocationSet().size() << endl;
     cout << "Found initial " << spec.getInitial()->getName() << endl;
@@ -66,6 +68,14 @@ int main(int argc, char **argv){
     vector(1,0) = 0;
     Matrix result = test*vector;
     result.print();
+
+
+    ActivitySet a(acts);
+
+    mpSS stsp(spec.getInitial(),2);
+    stsp.generateMaxPlusStateSpace(spec,a,2);
+    stsp.print();
+
     return 0;
 }
 

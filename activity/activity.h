@@ -87,6 +87,7 @@ public:
     set<Dep*> getDepSet() {return depSet;}
     Activity(std::string n) : Graph(n), activityMatrix(NULL) {}
 
+
     void generateActivityMatrix();
     TopologicalActivity* convertActivityToTA();
     // Matrix
@@ -99,9 +100,13 @@ public:
 
 class ActivitySet {
 public:
+
     set<Activity*> activitySet;
+    ActivitySet() : activitySet() {}
+    ActivitySet(set<Activity*> acts) : activitySet(acts) {}
 
     Activity* addActivity(std::string n) {Activity* act = new Activity(n); activitySet.insert(act); return act;}
+    Activity* findByName(std::string n);
 };
 
 

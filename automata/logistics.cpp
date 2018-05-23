@@ -15,9 +15,9 @@
 /**
     constructors
 */
-Automata::Automata(string &name) : Graph(name) {}
-Automata::Automata() : Graph() {}
-Transition::Transition(Location *s, Location *d, EdgeInfo *e): Edge(s, d, e) {}
+Automata::Automata(string &name) : name(name) {}
+
+
 
 /**
     adds a new location to the automaton and returns a pointer to the newly added location.

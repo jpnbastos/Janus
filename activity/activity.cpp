@@ -227,3 +227,12 @@ void Activity::generateActivityMatrix() {
     this->activityMatrix = m;
 
 }
+
+Activity* ActivitySet::findByName(std::string name) {
+    for ( auto a : activitySet ) {
+        if(a->getName() == name){
+            return a;
+        }
+    }
+    return NULL;
+}

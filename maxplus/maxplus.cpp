@@ -17,3 +17,14 @@ void Matrix::print() {
         std::cout << " |" << std::endl;
     }
 }
+
+
+double Matrix::norm() {
+    double norm_value;
+    //should be a vector!
+    for(int i = 0; i < this->size_c; i++){
+        norm_value = std::max(norm_value,(*this)(i,0));
+    }
+
+    return norm_value;
+}
