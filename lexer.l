@@ -32,7 +32,8 @@ underscore [_]
 "!"             { return T_EO; }
 "Activities"    { return T_ACTIVITIES;}
 "final"         { return T_FINAL;}
-
+"system"        { return T_SYSTEM;}
+"resource"      { return T_RESOURCE;}
 "activity"      { return T_ACTIVITY; }
 "claim"         { return T_CLAIM; }
 "release"       { return T_RELEASE; }

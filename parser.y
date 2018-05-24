@@ -7,17 +7,21 @@ extern int yylex();
 #include "logistics.h"
 #include "activity.h"
 #include <stack>
+#include <vector>
+#include "plant.h"
 
 
 
-void yyerror(Automata* spec, set<Activity*>* acts,  const char* s);
+void yyerror(Automata* spec, set<Activity*>* acts, Plant* sys,  const char* s);
 int id = 0;
+int n_r = 0;
+int n_p = 0;
 std::string src;
 Activity* act = NULL;
 stack <string> eventx;
 stack <Activity*> activitiesx;
 stack <Node*> nodesx;
-
+stack <string> persx;
 struct superDep {
     std::string src;
     std::string dst;
@@ -28,7 +32,7 @@ stack <superDep> depsx;
 
 %parse-param {Automata* spec}
 %parse-param {set<Activity*>* acts}
-
+%parse-param {Plant* sys}
 %union {
 	int ival;
 	float fval;
@@ -58,6 +62,9 @@ stack <superDep> depsx;
 %token UNKNOWN
 %token ALPHANUM
 
+%token T_SYSTEM
+%token T_RESOURCE
+
 %token T_ACTIVITY
 %token T_CLAIM
 %token T_RELEASE
@@ -85,10 +92,37 @@ lines: {}
 ;
 
 line: {}
+    | T_SYSTEM ALPHANUM T_EOL2 resources T_EO {sys->setName($2); sys->setNR(n_r); sys->setNP(n_p);}
     | T_CONTROLLABLE words T_EOL1 {}
     | T_SUPERVISOR ALPHANUM T_EOL2 contents T_EO {spec->setName($2); }
     | T_ALPHABET words T_EOL1 {}
     | T_ACTIVITIES T_EOL2 activities T_FINAL {}
+;
+
+resources: {}
+    | resource resources {}
+;
+
+resource: {}
+    | T_RESOURCE ALPHANUM T_EOL2 pers T_EOL1 {
+        n_r++;
+        std::vector<string> persv;
+        int s = persx.size();
+        for(int i = 0; i < s; i++){
+            persv.push_back(persx.top());
+            persx.pop();
+            n_p++;
+        }
+        sys->setResource($2,persv);
+    }
+;
+
+pers: {}
+    | per pers {}
+;
+
+per: {}
+    | ALPHANUM T_COMMA {std::string name($1); persx.push(name);}
 ;
 
 activities: {}
@@ -108,7 +142,7 @@ activity:
          int d_size = depsx.size();
          for(int w = 0; w < d_size; w++){
                     superDep a = depsx.top();
-                    act1->addDepByName(a.src.c_str(),a.dst.c_str());
+                    act1->addDepByAlias(a.src.c_str(),a.dst.c_str());
                     depsx.pop();
          }
      $$ = act1;
@@ -122,9 +156,9 @@ nodes: {}
 ;
 
 node: {}
-    |  T_CLAIM ALPHANUM ALPHANUM T_EOL1  { Node* node = new Node($2,id,0.0,"",$3,true,false); $$ = node; id++; }
-    |  T_RELEASE ALPHANUM ALPHANUM T_EOL1 { Node* node = new Node($2,id,0.0,"",$3,false,true); $$ = node; id++; }
-    |  T_ACTION ALPHANUM ALPHANUM ALPHANUM NUMBER T_EOL1 { Node* node = new Node($2,id,$5,$3,$4,false,false); $$ = node; id++; }
+    |  T_CLAIM ALPHANUM ALPHANUM T_EOL1  { Node* node = new Node($2,$2,id,0.0,"",$3,true,false); $$ = node; id++; }
+    |  T_RELEASE ALPHANUM ALPHANUM T_EOL1 { Node* node = new Node($2,$2,id,0.0,"",$3,false,true); $$ = node; id++; }
+    |  T_ACTION ALPHANUM ALPHANUM ALPHANUM ALPHANUM NUMBER T_EOL1 { Node* node = new Node($3,$2,id,$6,$4,$5,false,false); $$ = node; id++; }
 ;
 
 deps: {}

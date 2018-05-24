@@ -5,6 +5,7 @@
 #include "activity/activity.h"
 #include "maxplus/maxplus.h"
 #include "maxplus/statespace.h"
+#include "activity/plant.h"
 
 #define N_INF -std::numeric_limits<double>::infinity()
 
@@ -12,18 +13,18 @@
 #define YYDEBUG 1 // This is new
 
 // prototype of bison-generated parser function
-int yyparse(Automata* spec, set<Activity*>* acts);
+int yyparse(Automata* spec, set<Activity*>* acts, Plant* sys);
 
 int main(int argc, char **argv){
     extern FILE* yyin;
     Automata spec = Automata();
-
+    Plant sys = Plant();
     ActivitySet acts = ActivitySet();
     cout << "Starting Parser: " << endl;
     yyin = fopen(argv[1], "r");
 
     do {
-        yyparse(&spec,&acts.activitySet);
+        yyparse(&spec,&acts.activitySet,&sys);
 
 
     } while (!feof(yyin));
@@ -33,6 +34,9 @@ int main(int argc, char **argv){
     cout << "Found initial " << spec.getInitial()->getName() << endl;
     cout << "Found marked " << spec.getMarkedSet().size() << endl;
     cout << "Found edges: " << spec.getTransitionSet().size() << endl;
+
+
+    sys.print();
 
 // printing automaton out
     spec.printAutomataToFile("cifout.cif");
@@ -79,7 +83,7 @@ int main(int argc, char **argv){
     return 0;
 }
 
-void yyerror(Automata* spec, set<Activity*>* acts, const char* s) {
+void yyerror(Automata* spec, set<Activity*>* acts, Plant* sys, const char* s) {
     fprintf(stderr, "Parse error: %s\n", s);
     exit(1);
 }

@@ -6,8 +6,8 @@
 
 #define NINF std::numeric_limits<double>::infinity()
 
-Node* Activity::addNode(std::string n, int id, double d, std::string p, std::string r, bool cl, bool rl) {
-    Node* newNode = new Node(n,id,d,p,r,cl,rl);
+Node* Activity::addNode(std::string n, std::string a, int id, double d, std::string p, std::string r, bool cl, bool rl) {
+    Node* newNode = new Node(n,a,id,d,p,r,cl,rl);
     nodeSet.insert(newNode);
     return newNode;
 }
@@ -16,6 +16,16 @@ Node* Activity::findNode(std::string name){
     for(std::set<Node*>::const_iterator it = Activity::nodeSet.begin(); it != nodeSet.end(); it++ ){
         Node* currentNode = *it;
         if(currentNode->getNamex() == name){
+            return currentNode;
+        }
+    }
+    return NULL;
+}
+
+Node* Activity::findNodeByAlias(std::string a){
+    for(std::set<Node*>::const_iterator it = Activity::nodeSet.begin(); it != nodeSet.end(); it++ ){
+        Node* currentNode = *it;
+        if(currentNode->alias == a){
             return currentNode;
         }
     }
@@ -59,6 +69,20 @@ Dep* Activity::addDepByName(std::string s, std::string d){
 
 
    if(src != NULL && dst != NULL){
+        Dep* newDep = new Dep(src,dst);
+        depSet.insert(newDep);
+        return newDep;
+    }
+    return NULL;
+}
+
+Dep* Activity::addDepByAlias(std::string s, std::string d){
+
+    Node* src = findNodeByAlias(s);
+    Node* dst = findNodeByAlias(d);
+
+
+    if(src != NULL && dst != NULL){
         Dep* newDep = new Dep(src,dst);
         depSet.insert(newDep);
         return newDep;

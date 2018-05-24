@@ -51,7 +51,7 @@ public:
 class Node {
 
 public:
-    Node(std::string n, int id, double d, std::string p, std::string r, bool cl, bool rl) : id(id), namex(n), duration(d), peripheral(p), resource(r), claim(cl), release(rl) {}
+    Node(std::string n, std::string a, int id, double d, std::string p, std::string r, bool cl, bool rl) : id(id), namex(n), alias(a), duration(d), peripheral(p), resource(r), claim(cl), release(rl) {}
     double duration;
     std::string peripheral;
     std::string resource;
@@ -59,6 +59,7 @@ public:
     bool release;
     int id;
     std::string namex;
+    std::string alias;
 
     std::string getNamex() {return namex;}
 };
@@ -76,13 +77,15 @@ public:
 class Activity : public Graph {
 
 public:
-    Node* addNode(std::string n, int id, double d, std::string p, std::string r, bool cl, bool rl);
+    Node* addNode(std::string n,std::string a, int id, double d, std::string p, std::string r, bool cl, bool rl);
     void addNodeByPointer(Node* n) {nodeSet.insert(n);};
     Node* findNode(std::string name);
     Node* findNodeByID(int id);
     Node* findClaim(std::string r);
     Node* findRelease(std::string r);
     Dep* addDepByName(std::string s, std::string d);
+    Dep* addDepByAlias(std::string s, std::string d);
+    Node* findNodeByAlias(std::string a);
     set<Node*> getNodeSet() {return nodeSet;}
     set<Dep*> getDepSet() {return depSet;}
     Activity(std::string n) : Graph(n), activityMatrix(NULL) {}
